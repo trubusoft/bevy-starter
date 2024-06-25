@@ -42,3 +42,4 @@ See [test.rs](src/people/tests.rs) for examples.
 # References
 
 - [Bevy opinionated best practices](https://github.com/tbillington/bevy_best_practices)
+- Bevy basic by [Jacques](https://www.youtube.com/playlist?list=PLVnntJRoP85JHGX7rGDu6LaF3fmDDbqyd)
