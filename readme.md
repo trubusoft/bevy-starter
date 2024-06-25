@@ -35,4 +35,6 @@ Collection of useful docs to quickly start developing with bevy using RustRover 
 
 # Testing
 
+See [test.rs](src/people/tests.rs) for examples.
+
 > More on this: https://bevy-cheatbook.github.io/patterns/system-tests.html
