@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
