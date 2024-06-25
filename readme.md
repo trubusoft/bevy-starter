@@ -1,3 +1,4 @@
+Collection of useful docs to quickly start developing with bevy.
 
 # Setup
 
@@ -21,3 +22,6 @@
   - `org.rust.macros.proc`
 
   > More on this: https://bevy-cheatbook.github.io/setup/editor/jetbrains.html
+
+# Testing
+> More on this: https://bevy-cheatbook.github.io/patterns/system-tests.html
