@@ -23,6 +23,10 @@ Collection of useful docs to quickly start developing with bevy using RustRover 
 
   > More on this: https://bevy-cheatbook.github.io/setup/editor/jetbrains.html
 
+- Enable Reformat Code & Optimize Import on Save
+
+  Open Setting > Tools > Action on Save and check `Reformat Code` and `Optimize Import`
+
 - Enable dynamic linking for faster compile in development
     - On Run configuration, append `--features bevy/dynamic_linking` inside the command
     - On Settings > Rust > External Linters, add `--features bevy/dynamic_linking` on Additional arguments
