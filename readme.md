@@ -1,4 +1,4 @@
-Collection of useful docs to quickly start developing with bevy.
+Collection of useful docs to quickly start developing with bevy using RustRover on Ubuntu.
 
 # Setup
 
