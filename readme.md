@@ -38,8 +38,11 @@ Collection of useful template & docs to quickly start developing with bevy.
 
 See [test.rs](src/people/tests.rs).
 
-## References
+## Docs
 
 - [Tainted Coders](https://taintedcoders.com/)
+
+## References
+
+- [bevy-starter](https://github.com/nolantait/bevy-starter)
 - [Bevy opinionated best practices](https://github.com/tbillington/bevy_best_practices)
-- Bevy basic by [Jacques](https://www.youtube.com/playlist?list=PLVnntJRoP85JHGX7rGDu6LaF3fmDDbqyd)
