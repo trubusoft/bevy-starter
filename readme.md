@@ -11,7 +11,9 @@ Collection of useful template & docs to quickly start developing with bevy.
       sudo apt install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
       ```
 
-      > More on this: https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md
+      > More on this: https://github.com/bevyengine/bevy/blob/latest/docs/linux_dependencies.md#ubuntu
+
+    - Windows: [link](https://bevyengine.org/learn/quick-start/getting-started/setup/#windows)
 
 - Editor setup (RustRover)
     - External Linters
