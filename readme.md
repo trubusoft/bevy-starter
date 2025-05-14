@@ -47,4 +47,5 @@ See [test.rs](src/people/tests.rs).
 ## References
 
 - [bevy-starter](https://github.com/nolantait/bevy-starter)
+- [bevy_new_2d](https://github.com/TheBevyFlock/bevy_new_2d)
 - [Bevy opinionated best practices](https://github.com/tbillington/bevy_best_practices)
