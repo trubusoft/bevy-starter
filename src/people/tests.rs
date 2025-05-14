@@ -12,12 +12,18 @@ mod people_plugin_tests {
         app.update();
 
         // 5 people should be spawned
-        assert_eq!(app.world.query::<&Person>().iter(&app.world).len(), 5);
+        assert_eq!(
+            app.world_mut().query::<&Person>().iter(app.world()).len(),
+            5
+        );
 
         app.update();
 
         // There should still be 5 people
-        assert_eq!(app.world.query::<&Person>().iter(&app.world).len(), 5);
+        assert_eq!(
+            app.world_mut().query::<&Person>().iter(app.world()).len(),
+            5
+        );
     }
 
     #[test]
@@ -28,9 +34,9 @@ mod people_plugin_tests {
 
         // 5 people with job should be spawned
         assert_eq!(
-            app.world
+            app.world_mut()
                 .query::<(&Person, &Employment)>()
-                .iter(&app.world)
+                .iter(app.world())
                 .len(),
             5
         );
@@ -39,9 +45,9 @@ mod people_plugin_tests {
 
         // There should still be 5 people with job
         assert_eq!(
-            app.world
+            app.world_mut()
                 .query::<(&Person, &Employment)>()
-                .iter(&app.world)
+                .iter(app.world())
                 .len(),
             5
         );
