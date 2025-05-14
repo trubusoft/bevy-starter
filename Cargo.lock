@@ -305,6 +305,8 @@ name = "bevy-starter"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "log",
+ "tracing",
 ]
 
 [[package]]
