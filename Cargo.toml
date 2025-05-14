@@ -16,3 +16,23 @@ log = { version = "*", features = ["max_level_debug", "release_max_level_warn"] 
 # Compile low-severity logs out of web builds for performance.
 # https://github.com/trubusoft/bevy-starter-alt/blob/6f5430d0cec49a9d31614c8f93b85bcb82474fcb/Cargo.toml#L13
 tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_warn"] }
+
+
+[features]
+default = [
+    # Default to a native dev build.
+    "dev_native",
+]
+dev = [
+    # Improve compile times for dev builds by linking Bevy as a dynamic library.
+    "bevy/dynamic_linking",
+    "bevy/bevy_dev_tools",
+    "bevy/bevy_ui_debug"
+]
+dev_native = [
+    "dev",
+    # Enable asset hot reloading for native dev builds.
+    "bevy/file_watcher",
+    # Enable embedded asset hot reloading for native dev builds.
+    "bevy/embedded_watcher",
+]
