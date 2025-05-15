@@ -23,6 +23,9 @@ tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_w
 # On target build, add a --no-default-features to exclude all the default features
 [features]
 default = [
+    "dev",
+]
+dev = [
     # Improve compile times for dev builds by linking Bevy as a dynamic library.
     "bevy/dynamic_linking",
     "bevy/bevy_dev_tools",
