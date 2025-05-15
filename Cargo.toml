@@ -18,19 +18,15 @@ log = { version = "*", features = ["max_level_debug", "release_max_level_warn"] 
 tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_warn"] }
 
 
+# List of default features that will always be included on build
+# This is usefull for development iteartion (as to not adding -F dynamic_linking for every run)
+# On target build, add a --no-default-features to exclude all the default features
 [features]
 default = [
-    # Default to a native dev build.
-    "dev_native",
-]
-dev = [
     # Improve compile times for dev builds by linking Bevy as a dynamic library.
     "bevy/dynamic_linking",
     "bevy/bevy_dev_tools",
-    "bevy/bevy_ui_debug"
-]
-dev_native = [
-    "dev",
+    "bevy/bevy_ui_debug",
     # Enable asset hot reloading for native dev builds.
     "bevy/file_watcher",
     # Enable embedded asset hot reloading for native dev builds.
