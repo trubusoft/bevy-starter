@@ -1,9 +1,6 @@
-use bevy::prelude::{App, DefaultPlugins};
-use bevy_starter::example::PeoplePlugin;
+use bevy::prelude::App;
+use bevy_starter::ApplicationPlugin;
 
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugins(PeoplePlugin)
-        .run();
+    App::new().add_plugins(ApplicationPlugin).run();
 }
