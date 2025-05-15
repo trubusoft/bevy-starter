@@ -23,19 +23,21 @@ tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_w
 # On target build, add a --no-default-features to exclude all the default features
 [features]
 default = [
-    "dev",
+    "dev_native",
 ]
 dev = [
     # Improve compile times for dev builds by linking Bevy as a dynamic library.
     "bevy/dynamic_linking",
     "bevy/bevy_dev_tools",
     "bevy/bevy_ui_debug",
+]
+dev_native = [
+    "dev",
     # Enable asset hot reloading for native dev builds.
     "bevy/file_watcher",
     # Enable embedded asset hot reloading for native dev builds.
     "bevy/embedded_watcher",
 ]
-
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
