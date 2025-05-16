@@ -33,8 +33,17 @@ Collection of useful template & docs to quickly start developing with bevy.
 
 ## Building & Running
 
-- Review dependency on [Cargo.toml](Cargo.toml)
-- Run `cargo build` and check if compilation succeed
+Run the development:
+
+```
+cargo run --package bevy-starter --bin bevy-starter --features bevy/dynamic_linking
+```
+
+Build for release:
+
+```
+cargo build --no-default-features --package bevy-starter --bin bevy-starter
+```
 
 ## Testing
 
