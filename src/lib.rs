@@ -7,7 +7,7 @@ mod physics;
 mod utils;
 mod window;
 
-use bevy::prelude::{App, Plugin, PluginGroup};
+use bevy::prelude::{App, Plugin};
 
 pub struct ApplicationPlugin;
 
