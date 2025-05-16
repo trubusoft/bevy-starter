@@ -10,52 +10,51 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
 
+env:
+  # Reduce compile time and cache size.
+  RUSTFLAGS: -Dwarnings -Zshare-generics=y -Zthreads=0 -Cdebuginfo=line-tables-only
+  RUSTDOCFLAGS: -Dwarnings -Zshare-generics=y -Zthreads=0
+  # Use the same Rust toolchain across jobs so they can share a cache.
+  toolchain: nightly-2025-04-03
+
 jobs:
-  # Run tests.
   test:
     name: Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@master
         with:
-          components: rustc-codegen-cranelift-preview
+          toolchain: ${{ env.toolchain }}
 
-      - name: Install mold
-        uses: rui314/setup-mold@v1
-
-      - name: Active CI cargo config
-        run: mv .cargo/config_ci.toml .cargo/config.toml
-
-      - name: Install nextest
-        uses: taiki-e/install-action@nextest
-
-      - name: Install dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev
-
+      # Setting LD_LIBRARY_PATH is a workaround for <https://github.com/TheBevyFlock/bevy_new_2d/pull/318#issuecomment-2585935350>.
       - name: Set LD_LIBRARY_PATH
-        run: |
-          # Setting LD_LIBRARY_PATH is a workaround for <https://github.com/TheBevyFlock/bevy_new_2d/pull/318#issuecomment-2585935350>.
-          echo "LD_LIBRARY_PATH=$(rustc --print target-libdir)" >>"${GITHUB_ENV}"
+        run: echo "LD_LIBRARY_PATH=$(rustc --print target-libdir)" >>"${GITHUB_ENV}"
 
       - name: Restore Rust cache
         uses: Swatinem/rust-cache@v2
         with:
-          save-if: ${{ github.ref == 'refs/heads/main' }}
+          shared-key: test
           cache-directories: ${{ env.LD_LIBRARY_PATH }}
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@nextest
 
       - name: Run tests
-        run: cargo nextest run --locked --workspace --all-features --all-targets --no-fail-fast --no-tests warn
+        run: cargo nextest run --locked --workspace --all-targets --no-fail-fast --no-tests=warn
 
-      # Running doc tests separately is a workaround for <https://github.com/rust-lang/cargo/issues/6669>.
-      - name: Run doc tests
-        run: cargo test --locked --workspace --all-features --doc
+      # Running doctests separately is a workaround for <https://github.com/rust-lang/cargo/issues/6669>.
+      - name: Run doctests
+        run: cargo test --locked --workspace --doc --no-fail-fast
 
-  # Check that the game builds for web.
   check-web:
     name: Check web build
     runs-on: ubuntu-latest
@@ -65,60 +64,25 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: ${{ env.toolchain }}
           targets: wasm32-unknown-unknown
 
-      - name: Active CI cargo config
-        run: mv .cargo/config_ci.toml .cargo/config.toml
-
-      - name: Install dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev lld
-
       - name: Restore Rust cache
         uses: Swatinem/rust-cache@v2
         with:
+          shared-key: web-dev
           save-if: ${{ github.ref == 'refs/heads/main' }}
 
-      - name: Check web build
-        run: cargo check --config 'profile.web.inherits="dev"' --features dev --no-default-features --profile web --target wasm32-unknown-unknown
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
 
+      - name: Check web
+        run: cargo check --config 'profile.web.inherits="dev"' --no-default-features --features dev --profile web --target wasm32-unknown-unknown
 
-  # Run clippy lints.
   clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: clippy, rustc-codegen-cranelift-preview
-
-      - name: Install mold
-        uses: rui314/setup-mold@v1
-
-      - name: Active CI cargo config
-        run: mv .cargo/config_ci.toml .cargo/config.toml
-
-      - name: Install dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev
-
-      - name: Restore Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          save-if: ${{ github.ref == 'refs/heads/main' }}
-          shared-key: lints
-
-      - name: Run clippy lints
-        run: cargo clippy --locked --workspace --all-targets --all-features
-
-  # Check formatting.
-  format:
-    name: Format
+    name: Check Clippy Lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -126,73 +90,84 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@master
         with:
-          components: rustfmt
+          toolchain: ${{ env.toolchain }}
+          components: clippy
 
-      - name: Run cargo fmt
-        run: cargo fmt --all -- --check
+      - name: Restore Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: dev
+          save-if: false
 
-  # Check documentation.
-  doc:
-    name: Docs
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+
+      - name: Run Clippy lints
+        run: cargo clippy --locked --workspace --all-targets --all-features
+
+  format:
+    name: Check Formatting
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@master
         with:
-          components: rustc-codegen-cranelift-preview
+          toolchain: ${{ env.toolchain }}
+          components: rustfmt
 
-      - name: Install mold
-        uses: rui314/setup-mold@v1
+      - name: Run cargo fmt --check
+        run: cargo fmt --all -- --check
 
-      - name: Active CI cargo config
-        run: mv .cargo/config_ci.toml .cargo/config.toml
-
-      - name: Install dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev
-
-      - name: Restore Rust cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          save-if: ${{ github.ref == 'refs/heads/main' }}
-          shared-key: lints
-
-      - name: Check documentation
-        run: cargo doc --locked --workspace --all-features --document-private-items --no-deps
-
-  # Run Bevy lints.
-  bevy-lint:
-    name: Bevy linter
+  doc:
+    name: Check Documentation
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.toolchain }}
 
       - name: Restore Rust cache
         uses: Swatinem/rust-cache@v2
         with:
-          save-if: ${{ github.ref == 'refs/heads/main' }}
+          shared-key: dev
+          save-if: false
 
-      - name: Install Bevy linter
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+
+      - name: Check documentation
+        run: cargo doc --locked --workspace --all-features --document-private-items --no-deps
+
+  bevy-lint:
+    name: Check Bevy Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain (plus bevy_lint)
         uses: TheBevyFlock/bevy_cli/bevy_lint@lint-v0.3.0
 
-      - name: Add cranelift to rustc
-        run: rustup component add rustc-codegen-cranelift-preview
+      - name: Restore Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: dev
+          save-if: ${{ github.ref == 'refs/heads/main' }}
 
-      - name: Install mold
-        uses: rui314/setup-mold@v1
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
 
-      - name: Active CI cargo config
-        run: mv .cargo/config_ci.toml .cargo/config.toml
-
-      - name: Run Bevy linter
+      - name: Run Bevy lints
         run: bevy_lint --locked --workspace --all-targets --all-features
