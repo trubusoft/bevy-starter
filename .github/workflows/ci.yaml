@@ -82,7 +82,7 @@ jobs:
         run: cargo check --config 'profile.web.inherits="dev"' --no-default-features --features dev --profile web --target wasm32-unknown-unknown
 
   clippy:
-    name: Check Clippy Lint
+    name: Check Clippy lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -108,7 +108,7 @@ jobs:
         run: cargo clippy --locked --workspace --all-targets --all-features
 
   format:
-    name: Check Formatting
+    name: Check formatting
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -125,7 +125,7 @@ jobs:
         run: cargo fmt --all -- --check
 
   doc:
-    name: Check Documentation
+    name: Check documentation
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
