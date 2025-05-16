@@ -4,6 +4,7 @@ mod default;
 mod development;
 pub mod example;
 mod physics;
+mod utils;
 mod window;
 
 use bevy::prelude::{App, Plugin, PluginGroup};
