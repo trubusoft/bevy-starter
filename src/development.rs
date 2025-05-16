@@ -23,12 +23,12 @@ impl Plugin for DevelopmentPlugin {
         app.add_plugins(FrameTimeDiagnosticsPlugin::default());
         app.add_systems(
             Update,
-            toggle_debug_ui.run_if(input_just_pressed(TOGGLE_KEY)),
+            toggle_ui_debug_option.run_if(input_just_pressed(TOGGLE_KEY)),
         );
     }
 }
 
-fn toggle_debug_ui(mut options: ResMut<UiDebugOptions>) {
+fn toggle_ui_debug_option(mut options: ResMut<UiDebugOptions>) {
     options.toggle();
     info!("Toggling UiDebugOptions");
 }
