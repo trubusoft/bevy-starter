@@ -45,14 +45,14 @@ mod tests {
 
         let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
         assert!(ui_debug_options.is_some());
-        assert_eq!(ui_debug_options.unwrap().enabled, false);
+        assert!(!ui_debug_options.unwrap().enabled);
 
         app.add_systems(Update, toggle_ui_debug_option);
         app.update();
 
         let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
         assert!(ui_debug_options.is_some());
-        assert_eq!(ui_debug_options.unwrap().enabled, true);
+        assert!(ui_debug_options.unwrap().enabled);
     }
 
     #[test]
@@ -68,13 +68,13 @@ mod tests {
         // initial state
         let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
         assert!(ui_debug_options.is_some());
-        assert_eq!(ui_debug_options.unwrap().enabled, false);
+        assert!(!ui_debug_options.unwrap().enabled);
 
         // no key press
         app.update();
         let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
         assert!(ui_debug_options.is_some());
-        assert_eq!(ui_debug_options.unwrap().enabled, false);
+        assert!(!ui_debug_options.unwrap().enabled);
 
         // with key press
         let mut input = ButtonInput::<KeyCode>::default();
@@ -84,6 +84,6 @@ mod tests {
 
         let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
         assert!(ui_debug_options.is_some());
-        assert_eq!(ui_debug_options.unwrap().enabled, true);
+        assert!(ui_debug_options.unwrap().enabled);
     }
 }
