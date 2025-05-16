@@ -80,32 +80,32 @@ jobs:
   #
   #      - name: Check web
   #        run: cargo check --config 'profile.web.inherits="dev"' --no-default-features --features dev --profile web --target wasm32-unknown-unknown
-  #
-  #  clippy:
-  #    name: Check Clippy lint
-  #    runs-on: ubuntu-latest
-  #    timeout-minutes: 10
-  #    steps:
-  #      - name: Checkout repository
-  #        uses: actions/checkout@v4
-  #
-  #      - name: Install Rust toolchain
-  #        uses: dtolnay/rust-toolchain@master
-  #        with:
-  #          toolchain: ${{ env.toolchain }}
-  #          components: clippy
-  #
-  #      - name: Restore Rust cache
-  #        uses: Swatinem/rust-cache@v2
-  #        with:
-  #          shared-key: dev
-  #          save-if: false
-  #
-  #      - name: Install Bevy dependencies
-  #        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
-  #
-  #      - name: Run Clippy lints
-  #        run: cargo clippy --locked --workspace --all-targets --all-features
+
+  clippy:
+    name: Check Clippy lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.toolchain }}
+          components: clippy
+
+      - name: Restore Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: dev
+          save-if: false
+
+      - name: Install Bevy dependencies
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev
+
+      - name: Run Clippy lints
+        run: cargo clippy --locked --workspace --all-targets --all-features
 
   format:
     name: Check formatting
@@ -150,7 +150,7 @@ jobs:
         run: cargo doc --locked --workspace --all-features --document-private-items --no-deps
 
   bevy-lint:
-    name: Check Bevy Lint
+    name: Check Bevy lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
