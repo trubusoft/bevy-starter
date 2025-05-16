@@ -32,3 +32,58 @@ fn toggle_ui_debug_option(mut options: ResMut<UiDebugOptions>) {
     options.toggle();
     info!("Toggling UiDebugOptions");
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use bevy::prelude::ButtonInput;
+
+    #[test]
+    fn toggle_ui_debug_option_test() {
+        let mut app = App::new();
+        app.insert_resource(UiDebugOptions::default());
+
+        let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
+        assert!(ui_debug_options.is_some());
+        assert_eq!(ui_debug_options.unwrap().enabled, false);
+
+        app.add_systems(Update, toggle_ui_debug_option);
+        app.update();
+
+        let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
+        assert!(ui_debug_options.is_some());
+        assert_eq!(ui_debug_options.unwrap().enabled, true);
+    }
+
+    #[test]
+    fn toggle_ui_debug_option_with_key_press() {
+        let mut app = App::new();
+        app.insert_resource(UiDebugOptions::default());
+        app.insert_resource(ButtonInput::<KeyCode>::default());
+        app.add_systems(
+            Update,
+            toggle_ui_debug_option.run_if(input_just_pressed(TOGGLE_KEY)),
+        );
+
+        // initial state
+        let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
+        assert!(ui_debug_options.is_some());
+        assert_eq!(ui_debug_options.unwrap().enabled, false);
+
+        // no key press
+        app.update();
+        let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
+        assert!(ui_debug_options.is_some());
+        assert_eq!(ui_debug_options.unwrap().enabled, false);
+
+        // with key press
+        let mut input = ButtonInput::<KeyCode>::default();
+        input.press(TOGGLE_KEY);
+        app.insert_resource(input);
+        app.update();
+
+        let ui_debug_options = app.world().get_resource::<UiDebugOptions>();
+        assert!(ui_debug_options.is_some());
+        assert_eq!(ui_debug_options.unwrap().enabled, true);
+    }
+}
