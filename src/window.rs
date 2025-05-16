@@ -1,4 +1,4 @@
-use bevy::prelude::{default, Window, WindowPlugin};
+use bevy::prelude::{Window, WindowPlugin, default};
 use std::num::NonZero;
 
 /// Get the preferred [Window], which can be customized.
