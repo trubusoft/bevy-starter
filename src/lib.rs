@@ -2,6 +2,7 @@ mod camera;
 #[cfg(feature = "dev")]
 mod development;
 pub mod example;
+mod physics;
 mod window;
 
 use bevy::prelude::{App, DefaultPlugins, Plugin, PluginGroup};
@@ -15,6 +16,7 @@ impl Plugin for ApplicationPlugin {
 
         // Project-related plugins
         app.add_plugins(camera::MainCameraPlugin);
+        app.add_plugins(physics::PhysicsPlugins);
 
         #[cfg(feature = "dev")]
         app.add_plugins(development::DevelopmentPlugin);
