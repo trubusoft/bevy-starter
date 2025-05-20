@@ -1,6 +1,6 @@
 mod camera;
 mod default;
-#[cfg(feature = "dev")]
+#[cfg(feature = "development")]
 mod development;
 mod diagnostic;
 pub mod example;
@@ -18,7 +18,7 @@ impl Plugin for ApplicationPlugin {
         app.add_plugins(camera::CameraPlugin);
         app.add_plugins(physics::PhysicsPlugin);
 
-        #[cfg(feature = "dev")]
+        #[cfg(feature = "development")]
         app.add_plugins(development::DevelopmentPlugin);
     }
 }
