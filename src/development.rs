@@ -22,7 +22,7 @@ impl Plugin for DevelopmentPlugin {
 
 fn toggle_ui_debug_option(mut options: ResMut<UiDebugOptions>) {
     options.toggle();
-    info!("Toggling UiDebugOptions");
+    info!("toggling UiDebugOptions to: {:?}", &options.enabled);
 }
 
 #[cfg(test)]
