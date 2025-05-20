@@ -349,7 +349,6 @@ dependencies = [
  "bevy",
  "log",
  "rand 0.9.1",
- "tracing",
 ]
 
 [[package]]

@@ -15,10 +15,6 @@ rand = "0.9.1"
 # https://bevyengine.org/learn/quick-start/getting-started/setup/#improve-runtime-performance-optional
 log = { version = "*", features = ["max_level_debug", "release_max_level_warn"] }
 
-# Compile low-severity logs out of web builds for performance.
-# https://github.com/trubusoft/bevy-starter-alt/blob/6f5430d0cec49a9d31614c8f93b85bcb82474fcb/Cargo.toml#L13
-tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_warn"] }
-
 
 # List of default features that will always be included on build
 # This is usefull for development iteartion (as to not adding -F dynamic_linking for every run)
