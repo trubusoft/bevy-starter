@@ -2,6 +2,7 @@ mod camera;
 mod default;
 #[cfg(feature = "dev")]
 mod development;
+mod diagnostic;
 pub mod example;
 mod physics;
 mod utils;
