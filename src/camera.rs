@@ -1,3 +1,5 @@
+use bevy::input::mouse::AccumulatedMouseScroll;
+use bevy::prelude::{Projection, Single};
 use bevy::{
     input::common_conditions::input_just_pressed,
     log::debug,
@@ -9,6 +11,7 @@ use bevy::{
 
 const TOGGLE_KEY: KeyCode = KeyCode::Digit1;
 const MOVE_SPEED: f32 = 5.0;
+const ZOOM_SPEED: f32 = 0.1;
 
 #[derive(Resource, Default)]
 pub struct CameraOptions {
@@ -46,6 +49,7 @@ impl Plugin for CameraPlugin {
             toggle_zoomable_option.run_if(input_just_pressed(TOGGLE_KEY)),
         );
         app.add_systems(Update, move_camera);
+        app.add_systems(Update, zoom_camera);
     }
 }
 
@@ -95,6 +99,32 @@ fn move_camera(
                     camera_transform.translation.y -= MOVE_SPEED;
                 }
             }
+        }
+    }
+}
+
+fn zoom_camera(
+    option: Res<CameraOptions>,
+    mouse_wheel_input: Res<AccumulatedMouseScroll>,
+    camera: Single<&mut Projection, With<MainCamera>>,
+) {
+    if option.zoomable {
+        if let Projection::Orthographic(ref mut orthographic) = *camera.into_inner() {
+            // We want scrolling up to zoom in, decreasing the scale, so we negate the delta.
+            let delta_zoom = -mouse_wheel_input.delta.y * ZOOM_SPEED;
+            // When changing scales, logarithmic changes are more intuitive.
+            // To get this effect, we add 1 to the delta, so that a delta of 0
+            // results in no multiplicative effect, positive values result in a multiplicative increase,
+            // and negative values result in multiplicative decreases.
+            let multiplicative_zoom = 1. + delta_zoom;
+
+            orthographic.scale *= multiplicative_zoom;
+
+            // clamp zoom alternative
+            // orthographic.scale = (orthographic.scale * multiplicative_zoom).clamp(
+            //     camera_settings.orthographic_zoom_range.start,
+            //     camera_settings.orthographic_zoom_range.end,
+            // );
         }
     }
 }
