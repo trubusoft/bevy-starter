@@ -2,9 +2,9 @@ use crate::state::ApplicationState;
 use bevy::{
     dev_tools::states::log_transitions,
     input::common_conditions::input_just_pressed,
+    log::debug,
     prelude::{App, IntoScheduleConfigs, KeyCode, Plugin, ResMut, UiDebugOptions, Update},
 };
-use log::info;
 
 const TOGGLE_KEY: KeyCode = KeyCode::Backquote;
 
@@ -27,7 +27,7 @@ impl Plugin for DevelopmentPlugin {
 
 fn toggle_ui_debug_option(mut options: ResMut<UiDebugOptions>) {
     options.toggle();
-    info!("toggling UiDebugOptions to: {:?}", &options.enabled);
+    debug!("toggling UiDebugOptions to: {:?}", &options.enabled);
 }
 
 #[cfg(test)]
