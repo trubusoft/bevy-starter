@@ -1,4 +1,6 @@
+use crate::state::ApplicationState;
 use bevy::{
+    dev_tools::states::log_transitions,
     input::common_conditions::input_just_pressed,
     prelude::{App, IntoScheduleConfigs, KeyCode, Plugin, ResMut, UiDebugOptions, Update},
 };
@@ -13,6 +15,9 @@ pub struct DevelopmentPlugin;
 
 impl Plugin for DevelopmentPlugin {
     fn build(&self, app: &mut App) {
+        // Log `ApplicationState` transitions.
+        app.add_systems(Update, log_transitions::<ApplicationState>);
+
         app.add_systems(
             Update,
             toggle_ui_debug_option.run_if(input_just_pressed(TOGGLE_KEY)),
