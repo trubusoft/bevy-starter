@@ -24,9 +24,9 @@ impl Plugin for ApplicationPlugin {
         app.configure_sets(
             Update,
             (
-                ApplicationSystemSet::TickTimers,
-                ApplicationSystemSet::RecordInput,
-                ApplicationSystemSet::Update,
+                ApplicationSchedule::TickTimers,
+                ApplicationSchedule::RecordInput,
+                ApplicationSchedule::Update,
             )
                 .chain(),
         );
@@ -39,7 +39,7 @@ impl Plugin for ApplicationPlugin {
 /// High-level groupings of systems for the app in the `Update` schedule.
 /// Make sure to order it in the `configure_sets` call above.
 #[derive(SystemSet, Debug, Clone, Copy, Eq, PartialEq, Hash, PartialOrd, Ord)]
-enum ApplicationSystemSet {
+enum ApplicationSchedule {
     /// Tick timers.
     TickTimers,
     /// Record player input.
