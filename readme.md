@@ -14,8 +14,7 @@ sudo apt install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcomm
 ```
 
 > More on
->
-this: [bevyengine/linux_dependencies](https://github.com/bevyengine/bevy/blob/latest/docs/linux_dependencies.md#ubuntu)
+> this: [bevyengine/linux_dependencies](https://github.com/bevyengine/bevy/blob/latest/docs/linux_dependencies.md#ubuntu)
 
 #### Windows
 
