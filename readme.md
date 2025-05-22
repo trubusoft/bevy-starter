@@ -13,9 +13,6 @@ sudo apt update
 sudo apt install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
 ```
 
-> More on
-> this: [bevyengine/linux_dependencies](https://github.com/bevyengine/bevy/blob/latest/docs/linux_dependencies.md#ubuntu)
-
 #### Windows
 
 Follow the [windows setup](https://bevyengine.org/learn/quick-start/getting-started/setup/#windows)
@@ -26,7 +23,7 @@ We assume that RustRover is being used.
 
 #### External Linter
 
-Use 'Clippy' and optionally enable to run on the fly.
+Use Clippy and optionally make it to run on the fly.
 
 #### Formatting
 
