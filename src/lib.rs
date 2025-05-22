@@ -11,8 +11,8 @@ mod state;
 mod utils;
 mod window;
 
-use bevy::prelude::{App, IntoScheduleConfigs, Plugin, SystemSet, Update};
-use schedule::ApplicationSchedule;
+use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Update};
+use schedule::ApplicationSystems;
 
 pub struct ApplicationPlugin;
 
@@ -28,9 +28,9 @@ impl Plugin for ApplicationPlugin {
         app.configure_sets(
             Update,
             (
-                ApplicationSchedule::TickTimers,
-                ApplicationSchedule::RecordInput,
-                ApplicationSchedule::Update,
+                ApplicationSystems::TickTimers,
+                ApplicationSystems::RecordInput,
+                ApplicationSystems::Update,
             )
                 .chain(),
         );
