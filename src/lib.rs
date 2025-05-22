@@ -5,11 +5,13 @@ mod development;
 mod diagnostic;
 pub mod example;
 mod physics;
+mod schedule;
 mod state;
 mod utils;
 mod window;
 
 use bevy::prelude::{App, IntoScheduleConfigs, Plugin, SystemSet, Update};
+use schedule::ApplicationSchedule;
 
 pub struct ApplicationPlugin;
 
@@ -34,16 +36,4 @@ impl Plugin for ApplicationPlugin {
         #[cfg(feature = "development")]
         app.add_plugins(development::DevelopmentPlugin);
     }
-}
-
-/// High-level groupings of systems for the app in the `Update` schedule.
-/// Make sure to order it in the `configure_sets` call above.
-#[derive(SystemSet, Debug, Clone, Copy, Eq, PartialEq, Hash, PartialOrd, Ord)]
-enum ApplicationSchedule {
-    /// Tick timers.
-    TickTimers,
-    /// Record player input.
-    RecordInput,
-    /// Do everything else (consider splitting this into further variants).
-    Update,
 }
