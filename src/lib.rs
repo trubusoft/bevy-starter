@@ -11,8 +11,7 @@ mod state;
 mod utils;
 mod window;
 
-use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Update};
-use schedule::ApplicationSystems;
+use bevy::prelude::{App, Plugin};
 
 pub struct ApplicationPlugin;
 
@@ -23,17 +22,7 @@ impl Plugin for ApplicationPlugin {
         app.add_plugins(camera::CameraPlugin);
         app.add_plugins(physics::PhysicsPlugin);
         app.add_plugins(state::StatePlugin);
-
-        // attach application's internal system set to bevy's Update
-        app.configure_sets(
-            Update,
-            (
-                ApplicationSystems::TickTimers,
-                ApplicationSystems::RecordInput,
-                ApplicationSystems::Update,
-            )
-                .chain(),
-        );
+        app.add_plugins(schedule::SchedulePlugin);
 
         // attach game's core plugin
         app.add_plugins(game::GamePlugin);
