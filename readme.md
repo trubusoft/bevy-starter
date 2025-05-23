@@ -38,7 +38,7 @@ Configure action on save:
 
 #### Run Configurations
 
-Create several Shell configurations, like:
+Optionally create several convenient Shell configurations, like:
 
 - cargo run
 
@@ -58,6 +58,18 @@ Create several Shell configurations, like:
     cargo build --release --no-default-features --color=always
     ```
 
+- cargo fmt
+
+    ```
+    cargo fmt --all --check
+    ```
+
+- cargo clippy
+
+    ```
+    cargo clippy --all
+    ```
+    
 ## Docs and References
 
 - [Tainted Coders](https://taintedcoders.com/)
