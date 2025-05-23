@@ -8,15 +8,32 @@ use bevy::{
         Query, Res, ResMut, Resource, Startup, Transform, Update, With,
     },
 };
+use std::ops::Range;
 
 const TOGGLE_KEY: KeyCode = KeyCode::Digit1;
 const MOVE_SPEED: f32 = 5.0;
-const ZOOM_SPEED: f32 = 0.1;
+const ZOOM_RANGE: Range<f32> = 0.1..10.0;
+const ZOOM_SPEED: f32 = 0.2;
 
-#[derive(Resource, Default)]
+#[derive(Resource)]
 pub struct CameraOptions {
     pub moveable: bool,
     pub zoomable: bool,
+    /// Clamp the orthographic camera's scale to this range
+    pub zoom_range: Range<f32>,
+    /// Multiply mouse wheel inputs by this factor when using the orthographic camera
+    pub zoom_speed: f32,
+}
+
+impl Default for CameraOptions {
+    fn default() -> Self {
+        Self {
+            moveable: false,
+            zoomable: false,
+            zoom_range: ZOOM_RANGE,
+            zoom_speed: ZOOM_SPEED,
+        }
+    }
 }
 
 impl CameraOptions {
@@ -112,20 +129,16 @@ fn zoom_camera(
     if option.zoomable {
         if let Projection::Orthographic(ref mut orthographic) = *camera.into_inner() {
             // We want scrolling up to zoom in, decreasing the scale, so we negate the delta.
-            let delta_zoom = -mouse_wheel_input.delta.y * ZOOM_SPEED;
+            let delta_zoom = -mouse_wheel_input.delta.y * option.zoom_speed;
+
             // When changing scales, logarithmic changes are more intuitive.
             // To get this effect, we add 1 to the delta, so that a delta of 0
             // results in no multiplicative effect, positive values result in a multiplicative increase,
             // and negative values result in multiplicative decreases.
             let multiplicative_zoom = 1. + delta_zoom;
 
-            orthographic.scale *= multiplicative_zoom;
-
-            // clamp zoom alternative
-            // orthographic.scale = (orthographic.scale * multiplicative_zoom).clamp(
-            //     camera_settings.orthographic_zoom_range.start,
-            //     camera_settings.orthographic_zoom_range.end,
-            // );
+            orthographic.scale = (orthographic.scale * multiplicative_zoom)
+                .clamp(option.zoom_range.start, option.zoom_range.end);
         }
     }
 }
