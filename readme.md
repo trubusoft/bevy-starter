@@ -1,45 +1,64 @@
-Collection of useful docs to quickly start developing with bevy using RustRover on Ubuntu.
+Template to quickly start developing with bevy.
+Highly inspired from [bevy_new_2d](https://github.com/TheBevyFlock/bevy_new_2d)
+and [nolantait/bevy-starter](https://github.com/nolantait/bevy-starter).
 
-# Setup
+## Preparation
 
-- Install dependencies
+### Install dependencies
 
-  For ubuntu:
+#### Ubuntu
 
-  ```
-  sudo apt update
-  sudo apt install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
-  ```
+```
+sudo apt update
+sudo apt install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
+```
 
-  > More on this: https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md
+#### Windows
 
-- Add bevy dependency to `Cargo.toml`
+Follow the [windows setup](https://bevyengine.org/learn/quick-start/getting-started/setup/#windows)
 
-- Run `cargo build` and check if compilation succeed
+### Editor setup
 
-- Enable Query support for RustRover
-    - `org.rust.cargo.evaluate.build.scripts`
-    - `org.rust.macros.proc`
+We assume that RustRover is being used.
 
-  > More on this: https://bevy-cheatbook.github.io/setup/editor/jetbrains.html
+#### External Linter
 
-- Enable Reformat Code & Optimize Import on Save
+Use Clippy and optionally make it to run on the fly.
 
-  Open Setting > Tools > Action on Save and check `Reformat Code` and `Optimize Import`
+#### Formatting
 
-- Enable dynamic linking for faster compile in development
-    - On Run configuration, append `--features bevy/dynamic_linking` inside the command
-    - On Settings > Rust > External Linters, add `--features bevy/dynamic_linking` on Additional arguments
+Use `Rustfmt` instead of the built-in formatter.
 
-  > More on this: https://bevyengine.org/learn/quick-start/getting-started/setup/#dynamic-linking
+Configure action on save:
 
-# Testing
+- Check Reformat Code
+- Do **not** check the Optimize Import, as sometiems it conflicts with `Rustfmt` formatting. Instead, run
+  the Optimize Import on case-by-case basis when import optimization is needed (e.g. plenty of unused import
+  after refactoring)
 
-See [test.rs](src/people/tests.rs) for examples.
+#### Run Configurations
 
-> More on this: https://bevy-cheatbook.github.io/patterns/system-tests.html
+Create several Shell configurations, like:
 
-# References
+- cargo run
 
+    ```
+    cargo run --features bevy/dynamic_linking --color=always
+    ```
+
+- cargo test
+
+    ```
+    cargo test --features bevy/dynamic_linking --color=always
+    ```
+
+- cargo build for release
+
+    ```
+    cargo build --release --no-default-features --color=always
+    ```
+
+## Docs and References
+
+- [Tainted Coders](https://taintedcoders.com/)
 - [Bevy opinionated best practices](https://github.com/tbillington/bevy_best_practices)
-- Bevy basic by [Jacques](https://www.youtube.com/playlist?list=PLVnntJRoP85JHGX7rGDu6LaF3fmDDbqyd)
