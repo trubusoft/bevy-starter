@@ -3,7 +3,6 @@ mod default;
 #[cfg(feature = "development")]
 mod development;
 mod diagnostic;
-pub mod example;
 mod game;
 mod physics;
 mod schedule;
