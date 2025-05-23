@@ -122,16 +122,16 @@ fn move_camera(
         if any_pressed {
             if let Ok(mut camera_transform) = camera_transforms.single_mut() {
                 if input.pressed(KeyCode::KeyA) {
-                    camera_transform.translation.x -= MOVE_SPEED;
+                    camera_transform.translation.x -= option.movement_speed;
                 }
                 if input.pressed(KeyCode::KeyD) {
-                    camera_transform.translation.x += MOVE_SPEED;
+                    camera_transform.translation.x += option.movement_speed;
                 }
                 if input.pressed(KeyCode::KeyW) {
-                    camera_transform.translation.y += MOVE_SPEED;
+                    camera_transform.translation.y += option.movement_speed;
                 }
                 if input.pressed(KeyCode::KeyS) {
-                    camera_transform.translation.y -= MOVE_SPEED;
+                    camera_transform.translation.y -= option.movement_speed;
                 }
             }
         }
