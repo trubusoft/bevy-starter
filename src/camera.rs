@@ -122,7 +122,7 @@ fn move_camera(
     }
 }
 
-/// Mainly referenced from https://bevyengine.org/examples/camera/projection-zoom/
+/// Mainly referenced from <https://bevyengine.org/examples/camera/projection-zoom/>
 fn zoom_camera(
     option: Res<CameraOptions>,
     mouse_wheel_input: Res<AccumulatedMouseScroll>,
