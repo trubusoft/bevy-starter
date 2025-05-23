@@ -39,24 +39,8 @@ impl Default for CameraOptions {
 }
 
 impl CameraOptions {
-    pub fn enable_movement(&mut self) {
-        self.moveable = true;
-    }
-
-    pub fn disable_movement(&mut self) {
-        self.moveable = false;
-    }
-
     pub fn toggle_moveable(&mut self) {
         self.moveable = !self.moveable;
-    }
-
-    pub fn enable_zoom(&mut self) {
-        self.zoomable = true;
-    }
-
-    pub fn disable_zoom(&mut self) {
-        self.zoomable = false;
     }
 
     pub fn toggle_zoomable(&mut self) {
