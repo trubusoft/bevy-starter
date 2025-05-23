@@ -13,7 +13,7 @@ use std::ops::Range;
 const TOGGLE_KEY: KeyCode = KeyCode::Digit1;
 const MOVE_SPEED: f32 = 5.0;
 const ZOOM_RANGE: Range<f32> = 0.1..10.0;
-const ZOOM_SPEED: f32 = 0.2;
+const ZOOM_SPEED: f32 = 0.1;
 
 #[derive(Resource)]
 pub struct CameraOptions {
