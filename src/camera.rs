@@ -19,6 +19,7 @@ const ZOOM_SPEED: f32 = 0.1;
 pub struct CameraOptions {
     pub moveable: bool,
     pub zoomable: bool,
+    pub movement_speed: f32,
     /// Clamp the orthographic camera's scale to this range
     pub zoom_range: Range<f32>,
     /// Multiply mouse wheel inputs by this factor when using the orthographic camera
@@ -30,6 +31,7 @@ impl Default for CameraOptions {
         Self {
             moveable: false,
             zoomable: false,
+            movement_speed: MOVE_SPEED,
             zoom_range: ZOOM_RANGE,
             zoom_speed: ZOOM_SPEED,
         }
